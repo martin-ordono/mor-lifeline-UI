@@ -1,7 +1,10 @@
-import { Center, Grid, GridItem } from "@chakra-ui/react";
+import { Center, Checkbox, Flex, Grid, GridItem, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
-import { months } from "../../../utils/constants";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { Category } from "../../../models/category";
 import { Entry } from "../../../models/entry";
+import { months } from "../../../utils/constants";
+import { categoryList } from "../../../utils/sampleData";
 
 interface YearDisplayProps {
     data: Entry[];
@@ -10,11 +13,20 @@ interface YearDisplayProps {
 
 const YearDisplay = ({data, onDayClick}: YearDisplayProps) => {
     const [year, setYear] = useState<number>(new Date().getFullYear());
+    const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 
+    const handleChange = (category: Category) => {
+        if (selectedCategories.includes(category)) {
+            setSelectedCategories(selectedCategories.filter((c) => c.id !== category.id));
+        }
+        else {
+            setSelectedCategories([...selectedCategories, category]);
+        }
+    }
 
     const dayGrid = (day: number, month: {name: string, number: number}) => {
         const date = year * 10000 + month.number * 100 + day;
-        const check = data.filter((entry) => entry.date === date).length > 0;
+        const check = data.filter((entry) => entry.date === date && selectedCategories.includes(entry.category)).length > 0;
         return (
             <GridItem 
                 key={day}
@@ -59,30 +71,55 @@ const YearDisplay = ({data, onDayClick}: YearDisplayProps) => {
     }
 
     return (
-        <Grid
-            templateColumns="repeat(6, 1fr)"
-            alignContent="space-evenly"
-            height="50%"
-            p={5}
-            borderRadius={20}
-            bg="gray.100"
-            _dark={{ bg: "gray.900" }}
-            gap={5}
-            overflow={"auto"}
-        >
-            <GridItem colSpan={6} rowSpan={1} fontSize={"1rem"} textAlign={"center"}>{year}</GridItem>
-            {Array.from({length: 12}, (_, i) => i)
-                .map((index) => {
-                    if (index <= 5) {
-                        return monthGrid(months[index]);
-                    } else {
-                        console.log("index", index);
-                        console.log(12  - (index - 6));
-                        return monthGrid(months[11 - (index - 6)]); //index + 6  - (index-6)
+        <Flex direction="column" >
+            <Grid
+                templateColumns="repeat(12, 1fr)"
+            >
+                {categoryList.map((category) => {
+                    return (
+                        <GridItem key={category.id} colSpan={1} rowSpan={1} fontSize={".5rem"}>
+                            <Checkbox.Root
+                                alignSelf={"center"}
+                                onCheckedChange={() => handleChange(category)}
+                                checked={selectedCategories.includes(category)}
+                            >
+                                <Checkbox.HiddenInput />
+                                <Checkbox.Label fontSize={".7rem"} width="50px">{category.name}</Checkbox.Label>
+                                <Checkbox.Control />
+                            </Checkbox.Root>
+                        </GridItem>
+                    )
+                })}
+            </Grid>
+            <Grid
+                templateColumns="repeat(6, 1fr)"
+                alignContent="space-evenly"
+                height="50%"
+                p={5}
+                borderRadius={20}
+                bg="gray.100"
+                _dark={{ bg: "gray.900" }}
+                gap={5}
+                overflow={"auto"}
+            >
+                <GridItem colSpan={1} rowSpan={1} fontSize={"1rem"} textAlign={"left"}>
+                    <IconButton variant="ghost"><AiOutlineLeft /></IconButton>
+                </GridItem>
+                <GridItem colSpan={4} rowSpan={1} fontSize={"1rem"} textAlign={"center"}>{year}</GridItem>
+                <GridItem colSpan={1} rowSpan={1} fontSize={"1rem"} textAlign={"right"}>
+                    <IconButton variant="ghost" ><AiOutlineRight /></IconButton>
+                </GridItem>
+                {Array.from({length: 12}, (_, i) => i)
+                    .map((index) => {
+                        if (index <= 5) {
+                            return monthGrid(months[index]);
+                        } else {
+                            return monthGrid(months[11 - (index - 6)]); //index + 6  - (index-6)
+                        }
                     }
-                }
-            )}
-        </Grid>
+                )}
+            </Grid>
+        </Flex>
     )
 };
 
