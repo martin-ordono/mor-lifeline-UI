@@ -34,11 +34,11 @@ const CategoryModal = ({ onSubmit }: CategoryModalProps) => {
 
     return (
         <Collapsible.Root className="category-modal">
-            <Collapsible.Trigger borderWidth="1px" p={2} borderRadius="md" _open={{ bg: "gray.200" }}>
+            <Collapsible.Trigger borderWidth="1px" p={2} borderRadius="md" _open={{ bg: "gray.200",  _dark: { bg: "gray.800" } }}>
                 <BiBookmark />
             </Collapsible.Trigger>
             <Collapsible.Content>
-                <Fieldset.Root size="lg" maxW="md" borderWidth="1px" borderRadius="lg" p={6} mt="0.2rem">
+                <Fieldset.Root bg={"gray.200"} _dark={{ bg: "gray.900" }} size="lg" maxW="md" borderWidth="1px" borderRadius="md" p={6} mt="0.2rem">
                 <Stack>
                     <Fieldset.Legend>Category</Fieldset.Legend>
                     <Fieldset.HelperText>Create a new category</Fieldset.HelperText>

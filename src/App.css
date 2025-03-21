@@ -2,3 +2,11 @@
   width: 100vw;
   height: 100vh;
 }
+
+.month-grid * {
+  font-size: .5rem;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 20px;
+  min-height: 20px;
+}

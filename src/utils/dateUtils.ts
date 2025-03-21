@@ -1,12 +1,12 @@
 
-export const formatDateIntoNum = (date: Date | null) => {
-    if(date) {
+export const formatDateIntoNum = (date: Date | null): number => {
+    if (date) {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0'); // Ensure two digits
         const day = String(date.getDate()).padStart(2, '0'); // Ensure two digits
         return parseInt(`${year}${month}${day}`, 10);
     } else {
-        return null;
+        return formatDateIntoNum(new Date());
     }
 }
 export const parseNumberToDate = (dateNumber: Number | null): Date | undefined => {

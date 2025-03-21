@@ -1,18 +1,21 @@
 
 import { Center, Flex, Stack } from '@chakra-ui/react';
-import EntryModal from './components/Entry/EntryModal';
-import { Category } from './models/category';
-
 import { useState } from 'react';
-import './App.css';
 import CategoryModal from './components/Category/CategoryModal';
 import YearDisplay from './components/Display/Calendar/YearDisplay';
+import EntryModal from './components/Entry/EntryModal';
+import { Category } from './models/category';
 import { Entry } from './models/entry';
+import { formatDateIntoNum } from './utils/dateUtils';
 import { categoryList, sampleWeek } from './utils/sampleData';
+
+import './App.css';
+import { ColorModeButton } from './components/ui/color-mode';
 
 function App() {
     const [categories, setCategories] = useState<Category[]>(categoryList);
     const [data, setData] = useState<Entry[]>(sampleWeek);
+    const [selectedDate, setSelectedDate] = useState<number>(formatDateIntoNum(new Date()));
 
     const addCategory = (category: Category) => {
         setCategories([...categories, category]);
@@ -44,15 +47,26 @@ function App() {
     }
 
     const handleDayClick = (date: number) => {
-      console.log("Day clicked", date);
+      setSelectedDate(date);
     }
   
 
   return (
-    <Flex width="100%" height="100%" p={2}>
+    <Flex
+      width="100%"
+      height="100%"
+      p={2}
+    >
       <Stack height={"100%"} borderRight={"1px"} borderColor={"gray.200"} p={2} >
         <CategoryModal onSubmit={addCategory} />
-        <EntryModal onChange={handleEntryChange} categories={categories} data={data} />
+        <EntryModal
+          onChange={handleEntryChange}
+          categories={categories}
+          data={data}
+          date={selectedDate}
+          setDate={setSelectedDate}
+        />
+        <ColorModeButton />
       </Stack>
       <Center width={"100%"} height={"100%"}>
         <YearDisplay data={data} onDayClick={handleDayClick} />
