@@ -17,8 +17,11 @@ const EntryInput = ({data, category, dateNum, onChange}: EntryInputProps) => {
     const [checked, setChecked] = useState<boolean>(false);
     const [str, setStr] = useState<string | undefined>(entry?.valueStr);
     const [num, setNum] = useState<string | undefined>(entry?.valueNum !== undefined ? String(entry.valueNum) : undefined);
-    if(entry !== undefined && !checked) {
+
+    if (entry !== undefined && !checked) {
         setChecked(true);
+    } else if (entry === undefined && checked) {
+        setChecked(false);
     }
 
     const handleChange = (category: Category) => {
