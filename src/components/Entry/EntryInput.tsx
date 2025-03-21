@@ -1,49 +1,44 @@
-import { Checkbox, Collapsible, Flex, NumberInput, Show } from "@chakra-ui/react";
-import { Box } from "@chakra-ui/react/box";
+import { Checkbox, Flex, Input, NumberInput, Show } from "@chakra-ui/react";
 import { useState } from "react";
-import { VscThreeBars } from "react-icons/vsc";
 import { Category } from "../../models/category";
-import { formatDateIntoNum } from "../../utils/dateUtils";
-import CalendarInput from "../input/calendar";
 
-import "./EntryModal.css";
 import { Entry } from "../../models/entry";
 
 
 interface EntryInputProps {
-    entry: Entry | undefined;
+    data: Entry[];
     category: Category;
     dateNum: number;
-    onChange: (entry: Entry) => void;
+    onChange: (entry: Entry, toDelete: boolean) => void;
 }
 
-const EntryInput = ({entry, category, dateNum, onChange}: EntryInputProps) => {
-    const [checked, setChecked] = useState<boolean>(!!entry);
+const EntryInput = ({data, category, dateNum, onChange}: EntryInputProps) => {
+    const entry = data.find((entry) => entry.date === dateNum && entry.category.id === category.id);
+    const [checked, setChecked] = useState<boolean>(false);
     const [str, setStr] = useState<string | undefined>(entry?.valueStr);
-    const [num, setNum] = useState<number | undefined>(entry?.valueNum);
+    const [num, setNum] = useState<string | undefined>(entry?.valueNum !== undefined ? String(entry.valueNum) : undefined);
+    if(entry !== undefined && !checked) {
+        setChecked(true);
+    }
 
     const handleChange = (category: Category) => {
+        const check = !checked;
+        setChecked(check);
         const newEntry: Entry = {
             date: dateNum,
-            category: category.id,
-            id: Math.floor(Math.random() * 1000),
+            category: category,
             valueStr: "",
             valueNum: 0
         }
-        onChange(newEntry);
-        if (checkedCategories.includes(category.id)) {
-            setCheckedCategories(checkedCategories.filter((id) => id !== category.id));
-        } else {
-            setCheckedCategories([...checkedCategories, category.id]);
-        }
+        onChange(newEntry, !check);
     }
 
     return (
-        <Flex key={category.id} p={2}>
+        <Flex key={category.id} p={2} gap={4} align={"center"} height="2rem">
             <Checkbox.Root
-                alignSelf={"flex-start"}
+                alignSelf={"center"}
                 onCheckedChange={() => handleChange(category)}
-                checked={checkedCategories.includes(category.id)}
+                checked={checked}
             >
                 <Checkbox.HiddenInput />
                 <Checkbox.Label width="75px">{category.name}</Checkbox.Label>
@@ -51,14 +46,27 @@ const EntryInput = ({entry, category, dateNum, onChange}: EntryInputProps) => {
             </Checkbox.Root>
             
             <Show when={category.isNumeric}>
-                <NumberInput.Root defaultValue="0" width="200px">
+                <NumberInput.Root
+                    value={num}
+                    onValueChange={(e) => setNum(e.value)}
+                    width="100px"
+                    size={"xs"}
+                    disabled={!checked}
+                >
                 <NumberInput.Control />
                 <NumberInput.Input />
                 </NumberInput.Root>
             </Show>
             
             <Show when={category.isStr}>
-                <Input name="name" onChange={(e) => setName(e.target.value)} />
+                <Input
+                    name="str"
+                    value={str}
+                    onChange={(e) => setStr(e.target.value)}
+                    width="100px"
+                    size={"xs"}
+                    disabled={!checked}
+                />
             </Show>
             
         </Flex>

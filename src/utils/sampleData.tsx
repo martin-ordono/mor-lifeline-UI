@@ -1,5 +1,5 @@
 import { Category } from "../models/category";
-import { Display } from "../models/display";
+import { Entry } from "../models/entry";
 
 export const categoryList: Category[] = [
     {
@@ -39,37 +39,36 @@ export const categoryList: Category[] = [
     }
   ];
 
-export const sampleWeek: Display = {
-    data: [
-        {
-            id: 1,
-            name: 'Workout',
-            description: 'Entrenamiento',
-            isNumeric: false,
-            isStr: false,
-            entries: [
-                {
-                    date: 20250316
-                },
-                {
-                    date: 20250317
-                },
-                {
-                    date: 20250318
-                },
-                {
-                    date: 20250319
-                },
-                {
-                    date: 20250320
-                },
-                {
-                    date: 20250321
-                },
-                {
-                    date: 20250322
-                }
-            ]
-        }
-    ]
-};
+export const sampleWeek: Entry[] = [
+  {
+    date: 20250201,
+    category: categoryList[0]
+  },
+  {
+    date: 20250202,
+    category: categoryList[1],
+    valueNum: 5
+  },
+  {
+    date: 20250203,
+    category: categoryList[2]
+  },
+  {
+    date: 20250204,
+    category: categoryList[3]
+  },
+  {
+    date: 20250205,
+    category: categoryList[4],
+    valueStr: "La La Land"
+  },
+  {
+    date: 20250206,
+    category: categoryList[0]
+  },
+  {
+    date: 20250207,
+    category: categoryList[1],
+    valueNum: 10
+  }
+];

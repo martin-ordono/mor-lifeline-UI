@@ -13,9 +13,7 @@ interface CalendarInputProps {
 const CalendarInput: React.FC<CalendarInputProps> = ({ onChange, selectedDate }) => {
 
     const handleChange = (date: Date | null) => {
-        console.log(date);
         const dateNum = formatDateIntoNum(date);
-        console.log(dateNum);
         onChange(dateNum);
     }
 
@@ -31,6 +29,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ onChange, selectedDate })
 
                 {/* Date Picker */}
                 <DatePicker
+                    portalId="root-portal"
                     selected={parseNumberToDate(selectedDate)}
                     onChange={handleChange}
                     dateFormat="dd/MM/yyyy"

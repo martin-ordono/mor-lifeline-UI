@@ -34,7 +34,7 @@ const CategoryModal = ({ onSubmit }: CategoryModalProps) => {
 
     return (
         <Collapsible.Root className="category-modal">
-            <Collapsible.Trigger borderWidth="1px" p={2} borderRadius="md" _open={{ bg: "purple.100" }}>
+            <Collapsible.Trigger borderWidth="1px" p={2} borderRadius="md" _open={{ bg: "gray.200" }}>
                 <BiBookmark />
             </Collapsible.Trigger>
             <Collapsible.Content>

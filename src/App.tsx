@@ -1,112 +1,63 @@
 
-import { Box, Stack } from '@chakra-ui/react';
+import { Center, Flex, Stack } from '@chakra-ui/react';
 import EntryModal from './components/Entry/EntryModal';
 import { Category } from './models/category';
 
+import { useState } from 'react';
 import './App.css';
 import CategoryModal from './components/Category/CategoryModal';
-import { useState } from 'react';
-import { categoryList, sampleWeek } from './utils/sampleData';
-import { Display, DisplayCategory } from './models/display';
+import YearDisplay from './components/Display/Calendar/YearDisplay';
 import { Entry } from './models/entry';
+import { categoryList, sampleWeek } from './utils/sampleData';
 
 function App() {
     const [categories, setCategories] = useState<Category[]>(categoryList);
-    const [display, setDisplay] = useState<Display>(sampleWeek);
+    const [data, setData] = useState<Entry[]>(sampleWeek);
 
     const addCategory = (category: Category) => {
         setCategories([...categories, category]);
     };
 
     const handleEntryChange = (entry: Entry, remove?: boolean) => {
-        console.log(entry);
-        const category = display.data.find((category) => category.id === entry.category);
-        if (category) {
-          const exist = category.entries.find((e) => e.date === entry.date);
-
-          // If the entry exists and we want to remove it, we remove it
-          if(remove && exist) {
-            const newEntries = category.entries.filter((e) => e.date !== entry.date);
-            const newDisplay = {
-              ...display,
-              data: display.data.map((c) => {
-                if(c.id === category.id) {
-                  return {
-                    ...c,
-                    entries: newEntries
-                  }
-                }
-                return c;
-              })
-            }
-            setDisplay(newDisplay);
-          } else if(!remove && exist) { // If the entry exists and we want to add it, we update it
-            const newEntries = category.entries.map((e) => {
-              if(e.date === entry.date) {
-                return entry;
-              }
+      const entryCount = data.length;
+      console.log("prev count", entryCount);
+      
+      const existing = data.filter((e) => e.date === entry.date && e.category.id === entry.category.id);
+      if (existing.length > 0) {
+        if (remove) {
+          const newDisplay = data.filter((e) => e.date !== entry.date || e.category.id !== entry.category.id);
+          setData(newDisplay);
+        } else {
+          const newDisplay = data.map((e) => {
+            if (e.date === entry.date && e.category.id === entry.category.id) {
+              return entry;
+            } else {
               return e;
-            });
-            const newDisplay = {
-              ...display,
-              data: display.data.map((c) => {
-                if(c.id === category.id) {
-                  return {
-                    ...c,
-                    entries: newEntries
-                  }
-                }
-                return c;
-              })
             }
-            setDisplay(newDisplay);
-          } else if(!exist && !remove) { // If the entry doesn't exist and we want to add it
-            const newDisplay = {
-              ...display,
-              data: display.data.map((c) => {
-                if(c.id === category.id) {
-                  return {
-                    ...c,
-                    entries: [
-                      ...c.entries,
-                      entry
-                    ]
-                  }
-                }
-                return c;
-              })
-            }
-            setDisplay(newDisplay
-            );
-          }
-
-        } else if(!remove) {
-          const newCategory = categories.find((category) => category.id === entry.category) as DisplayCategory;
-          if (newCategory) {
-            const newDisplay = {
-              ...display,
-              data: [
-                ...display.data,
-                {
-                  ...newCategory,
-                  entries: [entry]
-                }
-              ]
-            }
-            setDisplay(newDisplay);
-          } 
+          });
+          setData(newDisplay);
         }
+      } else {
+        setData([...data, entry]);
+      }
+      
+    }
+
+    const handleDayClick = (date: number) => {
+      console.log("Day clicked", date);
     }
   
 
   return (
-    <Box width="100%" height="100%" p={2} >
-      <Stack>
-        
-      <CategoryModal onSubmit={addCategory} />
-      <EntryModal onChange={handleEntryChange} categories={categories} />
+    <Flex width="100%" height="100%" p={2}>
+      <Stack height={"100%"} borderRight={"1px"} borderColor={"gray.200"} p={2} >
+        <CategoryModal onSubmit={addCategory} />
+        <EntryModal onChange={handleEntryChange} categories={categories} data={data} />
       </Stack>
-    </Box>
+      <Center width={"100%"} height={"100%"}>
+        <YearDisplay data={data} onDayClick={handleDayClick} />
+      </Center>
+    </Flex>
   )
 }
 

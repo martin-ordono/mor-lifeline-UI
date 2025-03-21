@@ -4,7 +4,8 @@ import { createSystem, defineConfig } from "@chakra-ui/react/styled-system"
 const config = defineConfig({
     globalCss: {
       html: {
-        colorPalette: "purple", // Change this to any color palette you prefer
+        //colorPalette: "purple", // Change this to any color palette you prefer
+        borderColor: "gray.200",
       },
     },
   })

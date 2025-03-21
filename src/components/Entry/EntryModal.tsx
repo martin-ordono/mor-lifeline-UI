@@ -1,43 +1,32 @@
-import { Checkbox, Collapsible, Flex, Input, NumberInput, Show } from "@chakra-ui/react";
+import { Collapsible, Flex } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react/box";
 import { useState } from "react";
 import { VscThreeBars } from "react-icons/vsc";
 import { Category } from "../../models/category";
 import { formatDateIntoNum } from "../../utils/dateUtils";
-import CalendarInput from "../input/calendar";
+import CalendarInput from "../Input/calendar";
 
-import "./Entry.css";
 import { Entry } from "../../models/entry";
+import "./Entry.css";
+import EntryInput from "./EntryInput";
 
 
 interface EntryModalProps {
     categories: Category[];
-    onChange: (entry: Entry) => void;
+    onChange: (entry: Entry, toRemove?: boolean) => void;
+    data: Entry[];
 }
 
-const EntryModal = ({onChange, categories}: EntryModalProps) => {
+const EntryModal = ({onChange, categories, data}: EntryModalProps) => {
     const [dateNum, setDateNum] = useState<number>(formatDateIntoNum(new Date())!);
-    const [checkedCategories, setCheckedCategories] = useState<number[]>([]);
 
-    const handleChange = (category: Category) => {
-        const newEntry: Entry = {
-            date: dateNum,
-            category: category.id,
-            id: Math.floor(Math.random() * 1000),
-            valueStr: "",
-            valueNum: 0
-        }
-        onChange(newEntry);
-        if (checkedCategories.includes(category.id)) {
-            setCheckedCategories(checkedCategories.filter((id) => id !== category.id));
-        } else {
-            setCheckedCategories([...checkedCategories, category.id]);
-        }
+    const handleChange = (entry: Entry, toRemove?: boolean) => {
+        onChange(entry, toRemove);
     }
 
     return (
         <Collapsible.Root className="entry-modal">
-            <Collapsible.Trigger borderWidth="1px" p={2} borderRadius="md"  _open={{ bg: "purple.100" }}>
+            <Collapsible.Trigger borderWidth="1px" p={2} borderRadius="md"  _open={{ bg: "gray.200" }}>
                 <VscThreeBars />
             </Collapsible.Trigger>
             <Collapsible.Content>
@@ -52,29 +41,13 @@ const EntryModal = ({onChange, categories}: EntryModalProps) => {
                     >
                     {categories.map((category) => {
                         return (
-                            <Flex key={category.id} p={2}>
-                                <Checkbox.Root
-                                    alignSelf={"flex-start"}
-                                    onCheckedChange={() => handleChange(category)}
-                                    checked={checkedCategories.includes(category.id)}
-                                >
-                                    <Checkbox.HiddenInput />
-                                    <Checkbox.Label width="75px">{category.name}</Checkbox.Label>
-                                    <Checkbox.Control />
-                                </Checkbox.Root>
-                                
-                                <Show when={category.isNumeric}>
-                                    <NumberInput.Root defaultValue="0" width="200px">
-                                    <NumberInput.Control />
-                                    <NumberInput.Input />
-                                    </NumberInput.Root>
-                                </Show>
-                                
-                                <Show when={category.isStr}>
-                                    <Input name="name" onChange={(e) => setName(e.target.value)} />
-                                </Show>
-                                
-                            </Flex>
+                            <EntryInput
+                                key={category.id}
+                                category={category}
+                                dateNum={dateNum}
+                                onChange={handleChange}
+                                data={data}
+                            />
                         )
                     })}
                     </Flex>
