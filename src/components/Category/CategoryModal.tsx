@@ -20,7 +20,6 @@ const CategoryModal = ({ onSubmit }: CategoryModalProps) => {
     const handleSubmit = () => {
         if(name) {
             const newCategory: Category = {
-                id: Math.floor(Math.random() * 1000),
                 name: name,
                 description: description,
                 isNumeric: isNum,

@@ -1,4 +1,8 @@
-
+/**
+ * Convert a date to a number
+ * Example: January 1, 2021 -> 20210101
+ * if date is null, return today's date
+ */
 export const formatDateIntoNum = (date: Date | null): number => {
     if (date) {
         const year = date.getFullYear();
@@ -9,8 +13,14 @@ export const formatDateIntoNum = (date: Date | null): number => {
         return formatDateIntoNum(new Date());
     }
 }
-export const parseNumberToDate = (dateNumber: Number | null): Date | undefined => {
-    if (!dateNumber) return undefined
+
+/**
+ * Convert a number to a date
+ * Example: 20210101 -> January 1, 2021
+ * if dateNumber is null, return today's date
+*/
+export const parseNumberToDate = (dateNumber: Number | null): Date => {
+    if (!dateNumber) return new Date();
     const dateStr = dateNumber.toString(); // Convert to string
     const year = parseInt(dateStr.slice(0, 4), 10);
     const month = parseInt(dateStr.slice(4, 6), 10) - 1; // Months are 0-based in JS

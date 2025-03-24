@@ -14,3 +14,16 @@ export const months = [
 ];
 
 export const dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+export const colors = [
+    "green",
+    "orange",
+    "cyan",
+    "yellow",
+    "red",
+    "teal",
+    "blue",
+    "purple",
+    "pink",
+    "gray"
+];

@@ -3,15 +3,16 @@ import { useState } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { Category } from "../../../models/category";
 import { Entry } from "../../../models/entry";
-import { months } from "../../../utils/constants";
+import { colors, months } from "../../../utils/constants";
 import { categoryList } from "../../../utils/sampleData";
 
 interface YearDisplayProps {
     data: Entry[];
+    categories: Category[];
     onDayClick: (date: number) => void;
 }
 
-const YearDisplay = ({data, onDayClick}: YearDisplayProps) => {
+const YearDisplay = ({data, categories, onDayClick}: YearDisplayProps) => {
     const [year, setYear] = useState<number>(new Date().getFullYear());
     const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 
@@ -27,6 +28,7 @@ const YearDisplay = ({data, onDayClick}: YearDisplayProps) => {
     const dayGrid = (day: number, month: {name: string, number: number}) => {
         const date = year * 10000 + month.number * 100 + day;
         const check = data.filter((entry) => entry.date === date && selectedCategories.includes(entry.category)).length > 0;
+        const bgColor = colors[selectedCategories.findIndex((c) => c.id === data.find((entry) => entry.date === date)?.category.id) % colors.length];
         return (
             <GridItem 
                 key={day}
@@ -34,7 +36,7 @@ const YearDisplay = ({data, onDayClick}: YearDisplayProps) => {
                 rowSpan={1}
                 borderRadius="6px"
                 fontSize={".5rem"}
-                backgroundColor={check ? { base: "purple.200", _dark: "purple.900" } : ""}
+                backgroundColor={check ? { base: (bgColor+".200"), _dark: (bgColor+".600") } : ""}
                 onClick={() => onDayClick(date)}
             ><Center>{day}</Center>
                 
@@ -75,7 +77,7 @@ const YearDisplay = ({data, onDayClick}: YearDisplayProps) => {
             <Grid
                 templateColumns="repeat(12, 1fr)"
             >
-                {categoryList.map((category) => {
+                {categories.map((category) => {
                     return (
                         <GridItem key={category.id} colSpan={1} rowSpan={1} fontSize={".5rem"}>
                             <Checkbox.Root
@@ -103,11 +105,11 @@ const YearDisplay = ({data, onDayClick}: YearDisplayProps) => {
                 overflow={"auto"}
             >
                 <GridItem colSpan={1} rowSpan={1} fontSize={"1rem"} textAlign={"left"}>
-                    <IconButton variant="ghost"><AiOutlineLeft /></IconButton>
+                    <IconButton variant="ghost" onClick={()=>setYear(year-1)}><AiOutlineLeft /></IconButton>
                 </GridItem>
                 <GridItem colSpan={4} rowSpan={1} fontSize={"1rem"} textAlign={"center"}>{year}</GridItem>
                 <GridItem colSpan={1} rowSpan={1} fontSize={"1rem"} textAlign={"right"}>
-                    <IconButton variant="ghost" ><AiOutlineRight /></IconButton>
+                    <IconButton variant="ghost"   onClick={()=>setYear(year+1)} ><AiOutlineRight /></IconButton>
                 </GridItem>
                 {Array.from({length: 12}, (_, i) => i)
                     .map((index) => {
