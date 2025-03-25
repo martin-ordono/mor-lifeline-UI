@@ -10,14 +10,15 @@ import "./Entry.css";
 
 
 interface EntryModalProps {
-    categories: Category[];
-    onChange: (entry: Entry, toRemove?: boolean) => void;
-    data: Entry[];
-    date: number;
-    setDate: (date: number) => void;
+    props: any;
 }
 
-const EntryModal = ({onChange, categories, data, date, setDate}: EntryModalProps) => {
+const EntryModal = ({props}: EntryModalProps) => {
+    const categories: Category[] = props.categories;
+    const entries = props.entries;
+    const date = props.selectedDate;
+    const setDate = props.setSelectedDate;
+    const onChange = props.onChange;
 
     const handleChange = (entry: Entry, toRemove?: boolean) => {
         onChange(entry, toRemove);
@@ -45,7 +46,7 @@ const EntryModal = ({onChange, categories, data, date, setDate}: EntryModalProps
                                 category={category}
                                 dateNum={date}
                                 onChange={handleChange}
-                                data={data}
+                                data={entries}
                             />
                         )
                     })}

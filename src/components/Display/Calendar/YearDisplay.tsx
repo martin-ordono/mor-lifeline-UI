@@ -4,15 +4,16 @@ import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { Category } from "../../../models/category";
 import { Entry } from "../../../models/entry";
 import { colors, months } from "../../../utils/constants";
-import { categoryList } from "../../../utils/sampleData";
 
 interface YearDisplayProps {
-    data: Entry[];
-    categories: Category[];
-    onDayClick: (date: number) => void;
+    props: any;
 }
 
-const YearDisplay = ({data, categories, onDayClick}: YearDisplayProps) => {
+const YearDisplay = ({props}: YearDisplayProps) => {
+    const data: Entry[] = props.entries;
+    const categories: Category[] = props.categories;
+    const onDayClick = props.onDayClick;
+
     const [year, setYear] = useState<number>(new Date().getFullYear());
     const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
 
