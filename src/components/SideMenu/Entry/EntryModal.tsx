@@ -1,9 +1,8 @@
 import { Collapsible, Flex } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react/box";
 import { VscThreeBars } from "react-icons/vsc";
-import { Category } from "../../models/category";
-import { Entry } from "../../models/entry";
-import CalendarInput from "../Input/calendar";
+import { Category } from "../../../models/category";
+import CalendarInput from "../../Input/calendar";
 import EntryInput from "./EntryInput";
 
 import "./Entry.css";
@@ -18,11 +17,7 @@ const EntryModal = ({props}: EntryModalProps) => {
     const entries = props.entries;
     const date = props.selectedDate;
     const setDate = props.setSelectedDate;
-    const onChange = props.onChange;
-
-    const handleChange = (entry: Entry, toRemove?: boolean) => {
-        onChange(entry, toRemove);
-    }
+    const handleChange = props.handleEntryChange;
 
     return (
         <Collapsible.Root className="entry-modal">

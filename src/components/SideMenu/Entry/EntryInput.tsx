@@ -1,8 +1,8 @@
 import { Checkbox, Flex, Input, NumberInput, Show } from "@chakra-ui/react";
 import { useState } from "react";
-import { Category } from "../../models/category";
+import { Category } from "../../../models/category";
 
-import { Entry } from "../../models/entry";
+import { Entry } from "../../../models/entry";
 
 
 interface EntryInputProps {
@@ -45,7 +45,7 @@ const EntryInput = ({data, category, dateNum, onChange}: EntryInputProps) => {
             >
                 <Checkbox.HiddenInput />
                 <Checkbox.Label width="75px">{category.name}</Checkbox.Label>
-                <Checkbox.Control />
+                <Checkbox.Control borderColor="gray.700" _dark={{ borderColor: "gray.500" }} />
             </Checkbox.Root>
             
             <Show when={category.isNumeric}>
@@ -57,12 +57,13 @@ const EntryInput = ({data, category, dateNum, onChange}: EntryInputProps) => {
                     disabled={!checked}
                 >
                 <NumberInput.Control />
-                <NumberInput.Input />
+                <NumberInput.Input borderColor="gray.700" _dark={{ borderColor: "gray.500" }} />
                 </NumberInput.Root>
             </Show>
             
             <Show when={category.isStr}>
                 <Input
+                    borderColor="gray.700" _dark={{ borderColor: "gray.500" }}
                     name="str"
                     value={str}
                     onChange={(e) => setStr(e.target.value)}

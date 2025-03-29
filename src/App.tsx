@@ -1,39 +1,38 @@
 
-import { Center, Flex, Stack } from '@chakra-ui/react';
+import { Box, Flex, Stack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { createCategory, getAll } from './api/categoryApi';
-import { getEntriesBbyYear } from './api/entryApi';
-import CategoryModal from './components/Category/CategoryModal';
-import YearDisplay from './components/Display/Calendar/YearDisplay';
-import EntryModal from './components/Entry/EntryModal';
+import { createCategoryDemo, getAllCategoriesDemo } from './api/categoryApi';
+import { getAllEntriesDemo, getEntriesBbyYear } from './api/entryApi';
+import EntryModal from './components/SideMenu/Entry/EntryModal';
 import { ColorModeButton } from './components/ui/color-mode';
 import { Category } from './models/category';
 import { Entry } from './models/entry';
-import { formatDateIntoNum, parseNumberToDate } from './utils/dateUtils';
+import { formatDateIntoNum } from './utils/dateUtils';
 
 import './App.css';
+import DisplayWrapper from './components/Display/DisplayWrapper';
+import CategoryModal from './components/SideMenu/Category/CategoryModal';
 
 function App() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [entries, setEntries] = useState<Entry[]>([]);
     const [selectedDate, setSelectedDate] = useState<number>(formatDateIntoNum(new Date()));
 
-    
+
     useEffect(() => {
         // get categories
-        getAll().then((categories) => {
+        getAllCategoriesDemo().then((categories) => {
           setCategories(categories);
         });
 
         // get entries
-        const currentYear = parseNumberToDate(selectedDate).getFullYear();
-        getEntriesBbyYear(currentYear).then((entries) => {
+        getAllEntriesDemo().then((entries) => {
           setEntries(entries);
         });
     }, []); // empty dependency array to run once on mount
 
     const addCategory = (category: Category) => {
-      createCategory(category).then((newCategory) => {
+      createCategoryDemo(category).then((newCategory) => {
         setCategories([...categories, newCategory]);
       });
     };
@@ -79,18 +78,17 @@ function App() {
 
   return (
     <Flex
-      width="100%"
-      height="100%"
       p={2}
+      height={"100%"}
     >
-      <Stack height={"100%"} borderRight={"1px"} borderColor={"gray.200"} p={2} >
+      <Stack height={"100%"} borderRight={"1px solid"} borderColor={"gray.700"} p={2} >
         <CategoryModal onSubmit={addCategory} />
         <EntryModal props={props} />
         <ColorModeButton />
       </Stack>
-      <Center width={"100%"} height={"100%"}>
-        <YearDisplay props={props} />
-      </Center>
+      <Box height="100%" w={"100%"} p={2}>
+        <DisplayWrapper props={props} />
+      </Box>
     </Flex>
   )
 }
