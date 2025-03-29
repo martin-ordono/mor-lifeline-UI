@@ -1,11 +1,10 @@
-import { Chart as ChartJS, ChartData, BarElement, CategoryScale, Legend, LinearScale, Title, Tooltip, Colors } from "chart.js";
+import { Box } from "@chakra-ui/react";
+import { BarElement, CategoryScale, Chart as ChartJS, Colors, Legend, LinearScale, Title, Tooltip } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { Category } from "../../../models/category";
 import { Entry } from "../../../models/entry";
 import { colors } from "../../../utils/constants";
 import { parseNumberToDate } from "../../../utils/dateUtils";
-import { Box } from "@chakra-ui/react";
-import { color } from "chart.js/helpers";
 
 interface BarChartProps {
     props: any;

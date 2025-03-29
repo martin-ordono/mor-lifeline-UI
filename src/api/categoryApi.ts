@@ -32,7 +32,7 @@ export const createCategoryDemo = async (category: Category) => {
     });
 }
 
-export const deleteCategoryDemo = async (id: number) => {
+export const deleteCategoryDemo = async () => {
     return await new Promise<any>((resolve) => {
         setTimeout(() => { resolve({deleted: true}); }, 100);
     });
