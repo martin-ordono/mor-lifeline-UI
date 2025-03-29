@@ -1,9 +1,8 @@
 import { Box } from "@chakra-ui/react";
-import { BarElement, CategoryScale, Chart as ChartJS, Colors, Legend, LinearScale, Title, Tooltip } from "chart.js";
+import { BarElement, CategoryScale, Chart as ChartJS, Colors, Legend, LinearScale, scales, Title, Tooltip } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { Category } from "../../../models/category";
 import { Entry } from "../../../models/entry";
-import { colors } from "../../../utils/constants";
 import { parseNumberToDate } from "../../../utils/dateUtils";
 
 interface BarChartProps {
@@ -14,6 +13,7 @@ const BarChart = ({props}: BarChartProps) => {
     const entries: Entry[] = props.entries;
     const selectedCategories: number[] = props.selectedCategories;
     const categories: Category[] = props.categories;
+
     ChartJS.register(
         CategoryScale,
         LinearScale,
@@ -24,24 +24,25 @@ const BarChart = ({props}: BarChartProps) => {
         Legend
       );
     ChartJS.defaults.color = 'white';
+    ChartJS.defaults.datasets.line.showLine = false;
 
     const months: string[] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     const buildData = () => {
         const data = {
             labels: months,
-            datasets: selectedCategories.map((category) => {
-                const filteredEntries = entries.filter((entry) => entry.category.id === category);
+            datasets: selectedCategories.map((categoryId) => {
+                const category = categories.filter((cat) => cat.id === categoryId)[0];
+                const filteredEntries = entries.filter((entry) => entry.category.id === categoryId);
                 const data = Array(12).fill(0);
                 filteredEntries.forEach((entry) => {
                     const month = parseNumberToDate(entry.date).getMonth();
                     data[month] += 1;
                 });
                 return {
-                    label: categories.filter((cat) => cat.id === category)[0].name,
-                    backgroundColor: colors[selectedCategories.indexOf(category)],
-                    borderColor: colors[selectedCategories.indexOf(category)],
-                    data: data
+                    label: category.name,
+                    backgroundColor: category.color,
+                    data: data,
                 }
             })
         };
@@ -51,6 +52,26 @@ const BarChart = ({props}: BarChartProps) => {
 
     const options = {
         responsive: true,
+        scales: {
+          x: {
+            stacked: true,
+            grid: {
+                display: false,
+            },
+            ticks: {
+                color: "white"
+            }
+          },
+          y: {
+            stacked: true,
+            grid: {
+                display: false,
+            },
+            ticks: {
+                color: "white"
+            }
+          }
+        },
         plugins: {
           legend: {
             position: 'top' as const,
@@ -64,7 +85,7 @@ const BarChart = ({props}: BarChartProps) => {
     };
 
     return (
-        <Box borderRadius="md" bg={"gray.200"} _dark={{ bg: "gray.800" }}>
+        <Box borderRadius="md" bg="gray.100" _dark={{ bg: "gray.800" }}>
             <Bar options={options} data={buildData()} />
         </Box>
     )

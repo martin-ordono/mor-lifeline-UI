@@ -1,5 +1,5 @@
 import { Entry } from "../models/entry";
-import { sampleWeek } from "../utils/sampleData";
+import { sampleData } from "../utils/sampleData";
 import { apiManager } from "./api";
 
 const ENTRY_BASE_URL = "/entries";
@@ -36,7 +36,7 @@ export const deleteEntry = async (entry: Entry) => {
 
 export const getAllEntriesDemo = async () => {
     return await new Promise<Entry[]>((resolve) => {
-        setTimeout(() => { resolve(sampleWeek); }, 100);
+        setTimeout(() => { resolve(sampleData); }, 100);
     });
 }
 

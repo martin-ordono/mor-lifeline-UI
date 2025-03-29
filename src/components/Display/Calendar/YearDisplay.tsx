@@ -2,8 +2,8 @@ import { Center, Grid, GridItem, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { Entry } from "../../../models/entry";
-import { colors, months } from "../../../utils/constants";
 import { Category } from "../../../models/category";
+import { months } from "../../../utils/constants";
 
 interface YearDisplayProps {
     props: any;
@@ -20,8 +20,8 @@ const YearDisplay = ({props}: YearDisplayProps) => {
     const dayGrid = (day: number, month: {name: string, number: number}) => {
         const date = year * 10000 + month.number * 100 + day;
         const checkedCategories = data.filter((entry) => entry.date === date && selectedCategories.includes(entry.category.id!));
+        const bgColor = checkedCategories.length > 0 ? checkedCategories[0].category.color : "gray.200";
         const check = checkedCategories.length > 0;
-        const bgColor = check ? colors[categories.findIndex((c) => c.id === checkedCategories[0].category.id)] : '';
         return (
             <GridItem 
                 key={day}
@@ -29,7 +29,7 @@ const YearDisplay = ({props}: YearDisplayProps) => {
                 rowSpan={1}
                 borderRadius="6px"
                 fontSize={".5rem"}
-                backgroundColor={check ? { base: (bgColor+".200"), _dark: (bgColor+".600") } : ""}
+                backgroundColor={check ? { base: (bgColor), _dark: (bgColor+".600") } : ""}
                 onClick={() => onDayClick(date)}
                 _hover={{cursor: "pointer"}}
             >

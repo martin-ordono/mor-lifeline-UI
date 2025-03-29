@@ -4,4 +4,5 @@ export interface Category {
     description?: string;
     isNumeric: boolean;
     isStr: boolean;
+    color: string;
 }

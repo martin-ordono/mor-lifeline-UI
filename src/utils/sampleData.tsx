@@ -7,39 +7,44 @@ export const categoryList: Category[] = [
       name: 'Workout',
       description: 'Entrenamiento',
       isNumeric: false,
-      isStr: false
+      isStr: false,
+      color: '#FF0000'
     },
     {
       id: 2,
-      name: 'Run',
-      description: 'KMs run',
+      name: 'Sick',
+      description: '',
       isNumeric: true,
-      isStr: false
+      isStr: false,
+      color: '#00FF00'
     },
     {
       id: 3,
-      name: 'Alcohol',
-      description: 'Drink alcohol at some point',
+      name: 'Party',
+      description: '',
       isNumeric: false,
-      isStr: false
+      isStr: false,
+      color: '#0000FF'
     },
     {
       id: 4,
       name: 'Work',
       description: 'Trabajo',
       isNumeric: false,
-      isStr: false
+      isStr: false,
+      color: '#FFFF00'
     },
     {
       id: 5,
-      name: 'Pelicula',
+      name: 'Movie',
       description: 'Pelicula vista',
       isNumeric: false,
-      isStr: true
+      isStr: true,
+      color: '#FF00FF'
     }
   ];
 
-export const sampleWeek: Entry[] = [
+export const sampleData: Entry[] = [
   {
     date: 20250201,
     category: categoryList[0]
@@ -58,11 +63,6 @@ export const sampleWeek: Entry[] = [
     category: categoryList[3]
   },
   {
-    date: 20250205,
-    category: categoryList[4],
-    valueStr: "La La Land"
-  },
-  {
     date: 20250206,
     category: categoryList[0]
   },
@@ -70,6 +70,126 @@ export const sampleWeek: Entry[] = [
     date: 20250207,
     category: categoryList[1],
     valueNum: 10
+  },
+  {
+    date: 20250208,
+    category: categoryList[2]
+  },
+  {
+    date: 20250209,
+    category: categoryList[3]
+  },
+  {
+    date: 20250210,
+    category: categoryList[4],
+    valueStr: "Inception"
+  },
+  {
+    date: 20250211,
+    category: categoryList[0]
+  },
+  {
+    date: 20250212,
+    category: categoryList[1],
+    valueNum: 15
+  },
+  {
+    date: 20250213,
+    category: categoryList[2]
+  },
+  {
+    date: 20250216,
+    category: categoryList[0]
+  },
+  {
+    date: 20250217,
+    category: categoryList[1],
+    valueNum: 20
+  },
+  {
+    date: 20250219,
+    category: categoryList[3]
+  },
+  {
+    date: 20250220,
+    category: categoryList[4],
+    valueStr: "Interstellar"
+  },
+  {
+    date: 20250221,
+    category: categoryList[0]
+  },
+  {
+    date: 20250222,
+    category: categoryList[1],
+    valueNum: 25
+  },
+  {
+    date: 20250224,
+    category: categoryList[3]
+  },
+  {
+    date: 20250225,
+    category: categoryList[4],
+    valueStr: "The Godfather"
+  },
+  {
+    date: 20250226,
+    category: categoryList[0]
+  },
+  {
+    date: 20250227,
+    category: categoryList[1],
+    valueNum: 30
+  },
+  {
+    date: 20250229,
+    category: categoryList[3]
+  },
+  {
+    date: 20250301,
+    category: categoryList[4],
+    valueStr: "The Dark Knight"
+  },
+  {
+    date: 20250302,
+    category: categoryList[0]
+  },
+  {
+    date: 20250303,
+    category: categoryList[1],
+    valueNum: 35
+  },
+  {
+    date: 20250304,
+    category: categoryList[2]
+  },
+  {
+    date: 20250305,
+    category: categoryList[3]
+  },
+  {
+    date: 20250306,
+    category: categoryList[4],
+    valueStr: "Pulp Fiction"
+  },
+  {
+    date: 20250307,
+    category: categoryList[0]
+  },
+  {
+    date: 20250308,
+    category: categoryList[1],
+    valueNum: 40
+  },
+  {
+    date: 20250310,
+    category: categoryList[3]
+  },
+  {
+    date: 20250311,
+    category: categoryList[4],
+    valueStr: "Fight Club"
   }
 ];
 
